@@ -1,10 +1,5 @@
 f = open("input.txt")
-# dat = [i.strip() for i in f.readlines()]
-# dat = [int(i) for i in f.readlines()]
 dat = [i.split() for i in f.readlines()]
-# dat = ''
-
-display = ['abcefg','cf','acdeg','acdfg','bcdf','abdfg','abdefg','acf','abcdefg','abcdfg']
 
 count = 0
 for i in dat:
@@ -14,18 +9,13 @@ for i in dat:
 
 print("1:",count)
 
-
-possibilities = {'a','b','c','d','e','f','g'}
-
-display = [{'a','b','c','e','f','g'},{'c','f'},{'a','c','d','e','g'},{'a','c','d','f','g'},
-           {'b','c','d','f'},{'a','b','d','f','g'},{'a','b','d','e','f','g'},{'a','c','f'},
-           {'a','b','c','d','e','f','g'},{'a','b','c','d','f','g'}]
 outputs = []
 for i in dat:
     new_i = i
-    # key is decoded, value is encoded
+    # decoder is a dict where key is the number and value is the set of segments that compose it.
     decoder = {1: None, 2: None, 3: None, 4: None, 5: None, 6: None, 7: None}
-    while len(''.join(new_i)) != len(i): #TODO: need better loop exit
+    # this should need 2 loops through, first to find 1,4,7,8 and second to find the rest.
+    while len(''.join(new_i)) != len(i):
         for j,k in enumerate(i):
             if len(k) == 2:
                 # value is 1
@@ -40,7 +30,7 @@ for i in dat:
                 decoder[7] = set(k)
                 new_i[j] = '7'
             elif len(k) == 7:
-                # value is 8, can't decifer anything though
+                # value is 8
                 decoder[8] = set(k)
                 new_i[j] = '8'
             if decoder[1] and decoder[4] and decoder[7]:
@@ -71,4 +61,5 @@ for i in dat:
                         decoder[9] = set(k)
                         new_i[j] = '9'
     outputs.append(int(''.join(new_i)[new_i.index("|")+1:]))
+    
 print("2:",sum(outputs))
