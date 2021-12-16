@@ -15,8 +15,7 @@ x_max1 = x
 import collections
 q = collections.deque()
 q.append((0,0))
-s = set()
-s.add((0,0))
+
 
 def default():
     return 1000000
@@ -51,12 +50,9 @@ x_max = (x_max + 1) * 5
 y_max = (y_max + 1) * 5
 
 q = collections.deque()
-q.append((x_max1,x_max1))
-
-def default():
-    return 1000000
-
-
+q.append((0,0))
+scores = collections.defaultdict(default)
+scores[(0,0)] = 0
 while len(q) > 0:
     x,y = q.popleft()
     for nx,ny in dirs:
