@@ -10,7 +10,6 @@ for i in dat:
     if n[0] not in conns:
         conns[n[0]] = []
     conns[n[0]].append(n[1])
-
     if n[1] not in conns:
         conns[n[1]] = []
     conns[n[1]].append(n[0])

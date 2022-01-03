@@ -98,12 +98,10 @@ def fit_scanner(cur_scanner, known_beacons):
                 beacons_permed = [(x + delta_x, y + delta_y, z + delta_z) for x, y, z in perm_list]
                 # step 3b
                 if len(known_beacons & set(beacons_permed)) >= 12:
-                    # print("Found:",cur_scanner.name)
                     cur_scanner.perm_idx = perm
                     cur_scanner.final_locs = beacons_permed # 3.b.1
                     known_beacons |= set(beacons_permed) # 3.b.2
                     cur_scanner.calc_scanner_loc() # 3.b.3
-                    # print(cur_scanner.name,":",cur_scanner.scanner_loc)
                     return True
     return False
 
