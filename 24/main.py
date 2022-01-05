@@ -1,86 +1,26 @@
-# from collections import defaultdict
-# from collections import deque
-# f = open("input.txt")
-# dat = [i.split() for i in f.read().split("\n")]
+# with help from: https://github.com/dphilipson/advent-of-code-2021/blob/master/src/days/day24.rs
+
+# index       0   1   2    3     4    5   6   7    8   9  10  11   12  13
+# div    =  [ 1,  1,  1,   1,   26,  26,  1,  1,  26, 26,  1, 26,  26, 26]
+# check  =  [13, 12, 12,  10,  -11, -13, 15, 10,  -2, -6, 14,  0, -15, -4]
+# offset =  [ 8, 13,  8,  10,   12,   1, 13,  5,  10,  3,  2,  2,  12,  7]
 #
-# def get_operand(op, regs):
-#     if op.isnumeric():
-#         return int(op)
-#     else:
-#         return int(regs[op])
-#
-# def run_prog(inp):
-#     regs = defaultdict(int)
-#     inp = deque(str(inp))
-#
-#     for i in dat:
-#         if i[0] == 'inp':
-#             regs[i[1]] = get_operand(inp.popleft(),regs)
-#         elif i[0] == 'add':
-#             regs[i[1]] = get_operand(i[1],regs) + get_operand(i[2],regs)
-#         elif i[0] == 'mul':
-#             regs[i[1]] = get_operand(i[1],regs) * get_operand(i[2],regs)
-#         elif i[0] == 'div':
-#             b = get_operand(i[2], regs)
-#             if b != 0:
-#                 regs[i[1]] = get_operand(i[1],regs) // b
-#             else:
-#                 return False
-#         elif i[0] == 'mod':
-#             a = get_operand(i[1],regs)
-#             b = get_operand(i[2],regs)
-#             if a<0 or b <= 0:
-#                 return False
-#             regs[i[1]] = a%b
-#         elif i[0] == 'eql':
-#             if get_operand(i[1],regs) == get_operand(i[2],regs):
-#                 regs[i[1]] = 1
-#             else:
-#                 regs[i[1]] = 0
-#
-#     if regs['z'] == 0:
-#         return True
+# push w[0] + 8                                                           1       5
+# push w[1] + 13                                                          3       9
+# push w[2] + 8                                                           6       9
+# push w[3] + 10                                                          2       9
+# pop. must have w[4] == popped_value - 11    -> w[4] == w[3] - 1         1       8
+# pop. must have w[5] == popped_value - 13    -> w[5] == w[2] - 5         1       4
+# push w[6] + 13                                                          1       2
+# push w[7] + 5                                                           1       6
+# pop. must have w[8] == popped_value - 2     -> w[8] == w[7] + 3         4       9
+# pop. must have w[9] == popped_value - 6     -> w[9] == w[6] + 7         8       9
+# push w[10] + 2                                                          1       7
+# pop. must have w[11] == popped_value        -> w[11] == w[10] + 2       3       9
+# pop. must have w[12] == popped_value - 15   -> w[12] == w[1] - 2        1       7
+# pop. must have w[13] == popped_value - 4    -> w[13] == w[0] + 4        5       9
 #
 #
-# for i in range(11111111111111,99999999999999):
-#     if int(i)%1000000 == 0:
-#         print(i)
-#         continue
-#     elif '0' in str(i):
-#         continue
-#     else:
-#         if run_prog(i):
-#             print(i)
-#             break
+# Part 1: 59998426997979
+# Part 2: 13621111481315
 
-def calc_new_z(prev_z, w, a, b, c):
-    x = prev_z %26
-    z = prev_z // a
-    x -= b
-    x = 0 if x == w else 1
-    z = (25*x + 1) * z
-    y = (w + c)*x
-    z += y
-    return z
-
-
-a = [1, 1, 1, 1, 26, 26, 1, 1, 26, 26, 1, 26, 26, 26]
-b = [13, 12, 12, 10, -11, -13, 15, 10, -2, -6, 14, 0, -15, -4]
-c = [8, 13, 8, 10, 12, 1, 13, 5, 10, 3, 2, 2, 12, 7]
-
-from collections import defaultdict
-
-
-prevs = defaultdict(list)
-
-for j in range(1,10):
-    prevs[calc_new_z(0,j,a[0],b[0],c[0])] = [str(j)]
-print(prevs)
-
-for i in range(13):
-    news = defaultdict(list)
-    for old_z, list in prevs.items():
-        for j in range(1,10):
-            new_z = calc_new_z(0, j, a[i+1], b[i+1], c[i+1])
-            
-print(news)
